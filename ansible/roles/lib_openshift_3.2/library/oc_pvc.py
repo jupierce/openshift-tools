@@ -19,6 +19,7 @@ import shutil
 import subprocess
 import ruamel.yaml as yaml
 #import yaml
+import logging
 #
 ## This is here because of a bug that causes yaml
 ## to incorrectly handle timezone info on timestamps
