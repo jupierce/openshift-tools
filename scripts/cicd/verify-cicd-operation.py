@@ -7,10 +7,12 @@
 # pylint: disable=bare-except
 
 #Jenkins:
-#ssh use-tower1.ops.rhcloud.com <operation>
+# 1. Load key associated with cluster
+# 2. ssh use-tower1.ops.rhcloud.com <operation>
 #
-#in ssh/.authorized_keys
-# command=verify-cicd-operation.py <clusterid> <really long key right here>
+# in .ssh/authorized_keys, each ssh key is associated with privlege to perform operations
+# on a given cluster.
+#   command=verify-cicd-operation.py <clusterid> <really long key associated with a cluster>
 
 import re
 import os
@@ -37,7 +39,7 @@ logger.addHandler(logging.handlers.SysLogHandler('/dev/log'))
 keyname = sys.argv[1] if len(sys.argv) >= 2 else "<none specified>"
 cmd = os.environ.get("SSH_ORIGINAL_COMMAND", "")
 
-match = re.match(r"(?P<operation>install|delete|upgrade|status)", cmd)
+match = re.match(r"(?P<operation>install|delete|upgrade|status|logs)", cmd)
 
 if match:
     logger.info("%s Restricted key '%s' running command: %s" % (os.path.basename(__file__), keyname, cmd))
